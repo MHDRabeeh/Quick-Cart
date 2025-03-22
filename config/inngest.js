@@ -21,7 +21,7 @@ export const syncUserCreation = inngest.createFunction(
       imageUrl: image_url,
     };
     await connectDB();
-    await User.cteate(userData);
+    await User.create(userData);
   }
 );
 // inngest function to update user data in database

@@ -13,7 +13,7 @@ export async function POST(request){
             return NextResponse.json({success:false,message:"Invalid data"})
         }
         const amount = await items.reduce(async(acc,item)=>{
-                    const product = await Product.findById({item.product})
+                    const product = await Product.findById(item.product)
                     return acc+product.offerPrice*item.quantity
         },0)
 

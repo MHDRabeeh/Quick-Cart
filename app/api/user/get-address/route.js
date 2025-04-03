@@ -5,14 +5,10 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
   try {
     const { userId } = getAuth(req);
-    console.log(" this Get request is working properly from get address",userId);
-    
     if (userId) {
       const allAddress = await Address.find({userId});
-      console.log(allAddress);
-      
       return NextResponse.json({
-        sucesss: true,
+        success: true,
         message: "successfully fetch all address",
         allAddress,
       });
@@ -20,7 +16,7 @@ export async function GET(req) {
   } catch (error) {
 
     return NextResponse.json({
-        sucesss: false,
+        success: false,
         message: error.message
       });
   }

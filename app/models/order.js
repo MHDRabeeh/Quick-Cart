@@ -7,12 +7,12 @@ const orderSchema = new mongoose.Schema({
     ref: "user",
   },
   items:[{
-    prouct:{
+    product:{
         type:String,
-        required:true,
+        required: true,
         ref:"product"
     },
-    quatity:{
+    quantity:{
         type:Number,
         required:true,
     }
@@ -38,4 +38,4 @@ const orderSchema = new mongoose.Schema({
 });
 
 const Order = mongoose.models.order || mongoose.model("order",orderSchema)
-export default Order
+export default Order 

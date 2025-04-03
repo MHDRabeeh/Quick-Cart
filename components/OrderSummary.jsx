@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const OrderSummary = () => {
 
-  const { currency, router, getCartCount, getCartAmount, getToken,user } = useAppContext()
+  const { currency, router, getCartCount, getCartAmount, getToken, user, cartItems ,setCartItems} = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -16,15 +16,15 @@ const OrderSummary = () => {
 
     try {
       const token = await getToken()
-      const {data} = await axios.get('/api/user/get-address', { headers: { Authorization: `Bearer ${token}` } });
-      console.log(data.allAddress);
-     
-      if(data.success){
+      const { data } = await axios.get('/api/user/get-address', { headers: { Authorization: `Bearer ${token}` } });
+      if (data.success) {
         setUserAddresses(data.allAddress);
-        if(data.allAddress.length>0){
+        if (data.allAddress.length > 0) {
           setSelectedAddress(data.allAddress[0])
         }
-      }else{
+      } else {
+        console.log("this is working ");
+
         toast.error(data.message)
       }
     } catch (error) {
@@ -42,12 +42,41 @@ const OrderSummary = () => {
   };
 
   const createOrder = async () => {
-
+    try {
+      if (!selectedAddress) {
+        toast.error("select an address")
+      }
+      let cartItemsArray = Object.keys(cartItems).map((key) => ({
+        product: key, quantity: cartItems[key]
+      }))
+      cartItemsArray = cartItemsArray.filter((item) => item.quantity > 0)
+      if (cartItemsArray.length === 0) {
+        return toast.error("Cart is empty");
+      }
+      const token = await getToken()
+  
+      const { data } = await axios.post("/api/order/create", { address: selectedAddress._id, items: cartItemsArray }, 
+        { headers: { Authorization: `Bearer ${token}` } })
+  
+        if(data.success){
+          toast.success(data.message)
+          setCartItems({})
+          router.push("/order-placed")
+        }else{
+          toast.error(data.message)
+        }
+      
+    } catch (error) {
+      toast.error(error.message)
+    }
+   
   }
 
   useEffect(() => {
-    fetchUserAddresses();
-  }, [])
+    if (user) {
+      fetchUserAddresses();
+    }
+  }, [user])
 
   return (
     <div className="w-full md:w-96 bg-gray-500/5 p-5">

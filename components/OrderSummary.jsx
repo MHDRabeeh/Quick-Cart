@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const OrderSummary = () => {
 
-  const { currency, router, getCartCount, getCartAmount, getToken, user, cartItems ,setCartItems} = useAppContext()
+  const { currency, router, getCartCount, getCartAmount, getToken, user, cartItems, setCartItems } = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -23,8 +23,6 @@ const OrderSummary = () => {
           setSelectedAddress(data.allAddress[0])
         }
       } else {
-        console.log("this is working ");
-
         toast.error(data.message)
       }
     } catch (error) {
@@ -54,22 +52,53 @@ const OrderSummary = () => {
         return toast.error("Cart is empty");
       }
       const token = await getToken()
-  
-      const { data } = await axios.post("/api/order/create", { address: selectedAddress._id, items: cartItemsArray }, 
+
+      const { data } = await axios.post("/api/order/create", { address: selectedAddress._id, items: cartItemsArray },
         { headers: { Authorization: `Bearer ${token}` } })
-  
-        if(data.success){
-          toast.success(data.message)
-          setCartItems({})
-          router.push("/order-placed")
-        }else{
-          toast.error(data.message)
-        }
-      
+
+      if (data.success) {
+        toast.success(data.message)
+        setCartItems({})
+        router.push("/order-placed")
+      } else {
+        toast.error(data.message)
+      }
+
     } catch (error) {
       toast.error(error.message)
     }
-   
+
+  }
+
+  const createOrderStripe = async () => {
+    try {
+      if (!selectedAddress) {
+        toast.error("select an address")
+      }
+      let cartItemsArray = Object.keys(cartItems).map((key) => ({
+        product: key, quantity: cartItems[key]
+      }))
+      cartItemsArray = cartItemsArray.filter((item) => item.quantity > 0)
+      if (cartItemsArray.length === 0) {
+        return toast.error("Cart is empty");
+      }
+      const token = await getToken()
+
+      const { data } = await axios.post("/api/order/stripe", { address: selectedAddress._id, items: cartItemsArray },
+        { headers: { Authorization: `Bearer ${token}` } }) 
+
+        if(data.success){
+          window.location.href = data.url
+        }else{
+          toast.error(data.message)
+          // window.location.href = data.url
+        }
+
+    } catch (error) {
+        console.log(error);
+        toast.error(error.message)
+        
+    }
   }
 
   useEffect(() => {
@@ -166,7 +195,7 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <button onClick={createOrder} className="w-full bg-orange-600 text-white py-3 mt-5 hover:bg-orange-700">
+      <button onClick={createOrderStripe} className="w-full bg-orange-600 text-white py-3 mt-5 hover:bg-orange-700">
         Place Order
       </button>
     </div>

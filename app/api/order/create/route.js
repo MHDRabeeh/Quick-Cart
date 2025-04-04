@@ -1,3 +1,4 @@
+import Order from "@/app/models/order";
 import Product from "@/app/models/Produc";
 import User from "@/app/models/user";
 import { inngest } from "@/config/inngest";
@@ -13,21 +14,26 @@ export async function POST(request) {
     }
     const amount = await items.reduce(async (acc, item) => {
       const product = await Product.findById(item.product);
-      return await acc + product.offerPrice * item.quantity;
+      return (await acc) + product.offerPrice * item.quantity;
     }, 0);
+    // await inngest.send({
+    //   name: "order/created",
+    //   data: {
+    //     userId,
+    //     address,
+    //     items,
+    //     amount: amount + Math.floor(amount * 0.02),
+    //     date: Date.now(),
+    //   },
+    // });
 
-    console.log({address,items,amount,userId});
-    
-
-    await inngest.send({
-      name: "order/created",
-      data: {
-        userId,
-        address,
-        items,
-        amount: amount + Math.floor(amount * 0.02),
-        date: Date.now(),
-      },
+    await Order.create({
+      userId,
+      address,
+      items,
+      amount: amount + Math.floor(amount * 0.02),
+      date: Date.now(),
+      paymentType:"COD",
     });
 
     const user = await User.findById(userId);

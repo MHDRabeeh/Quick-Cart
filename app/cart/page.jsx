@@ -5,10 +5,28 @@ import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useAppContext } from "@/context/AppContext";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+
 
 const Cart = () => {
 
   const { products, router, cartItems, addToCart, updateCartQuantity, getCartCount } = useAppContext();
+
+  const { isSignedIn } = useUser();
+  if (isSignedIn === false) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div
+          onClick={() => router.push("/")}
+          className="text-center text-gray-800 text-lg font-medium border border-gray-300 px-6 py-4 rounded-lg shadow-md bg-white cursor-pointer transition duration-200 hover:bg-gray-100 hover:shadow-lg"
+        >
+          Sign in to view this page
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <>
@@ -102,7 +120,7 @@ const Cart = () => {
               </tbody>
             </table>
           </div>
-          <button onClick={()=> router.push('/all-products')} className="group flex items-center mt-6 gap-2 text-orange-600">
+          <button onClick={() => router.push('/all-products')} className="group flex items-center mt-6 gap-2 text-orange-600">
             <Image
               className="group-hover:-translate-x-1 transition"
               src={assets.arrow_right_icon_colored}

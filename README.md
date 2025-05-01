@@ -1,34 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+🛒 Quick Cart – Full-Stack E-commerce Platform
+Quick Cart is a modern and scalable full-stack e-commerce application built with Next.js 15, offering a seamless shopping experience with real-time features, secure authentication, and smooth payments. It includes powerful integrations like Stripe, Clerk, Cloudinary, Inngest, and is styled with Tailwind CSS v4.
+🚀 Live Demo
+🔗  https://quick-cart-ashy-rho.vercel.app/
+✨ Features
+🛍️ Full E-commerce Flow
+Browse products, add to cart, checkout, and manage orders—fully functional from start to finish.
 
-## Getting Started
+🔐 User Authentication (Clerk)
+Secure user sign-up, login, and session handling using Clerk’s modern auth system.
 
-First, run the development server:
+💳 Stripe Payment Integration
+Real-time, secure, and PCI-compliant payment processing via Stripe.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+☁️ Image Upload via Cloudinary
+Easily manage and optimize product images with Cloudinary.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🧠 Background Workflows with Inngest
+Handles asynchronous tasks like order confirmation, inventory updates, and transactional emails.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+🎨 Responsive UI with Tailwind CSS v4
+Clean, modern, and mobile-friendly design using the latest Tailwind features.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🧭 Product Filtering, Search & Sorting
+Intuitive user experience with advanced search and filter functionality.
 
-## Learn More
+🧪 Scalable Backend APIs
+Well-structured REST API with modular architecture and efficient MongoDB queries.
 
-To learn more about Next.js, take a look at the following resources:
+| Frontend  | Backend       | Auth     | Payments | Media Upload | Background Jobs | Styling       |
+|-----------|---------------|----------|----------|---------------|------------------|----------------|
+| Next.js 15 | Next.js API Routes | Clerk    | Stripe   | Cloudinary    | Inngest          | Tailwind CSS v4 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
+  
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
